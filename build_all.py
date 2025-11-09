@@ -42,9 +42,9 @@ def _configured(target: dict[str, str]) -> Generator[None, None, None]:
 
 def main() -> None:
     for target in _get_targets():
-        if target["BOARD"] in ["zero2w"]: #["zero2w", "rpi3", "rpi4"]:
-            target["ARCH_DIST_REPO_URL"] = "http://m64/mirror/archlinux-arm"
+        if target["BOARD"] in ["rpi4"]:
             target["ARCH"] = "aarch64"
+            target["ARCH_DIST_REPO_URL"] = "http://m64/mirror/archlinux-arm"
             with _configured(target):
                 retval = os.system("cat config.mk && make os && make image IMAGE_XZ=1")
                 if retval != 0:
