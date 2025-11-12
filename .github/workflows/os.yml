@@ -25,7 +25,6 @@ on:
         type: string
         default:
 
-
 jobs:
   os:
     runs-on: ubuntu-latest
@@ -56,3 +55,10 @@ jobs:
       - name: Making image
         run: make image ZIP=1
 
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: "${{inputs.BOARD}}-${{inputs.PLATFORM}}"
+          path: images
+          compression-level: 0
+          overwrite: true
