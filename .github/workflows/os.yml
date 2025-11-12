@@ -8,6 +8,10 @@ on:
       PLATFORM:
         required: true
         type: string
+      TIMEZONE:
+        required: false
+        type: string
+        default: Europe/Copenhagen
       SUFFIX:
         required: false
         type: string
@@ -20,9 +24,6 @@ on:
         required: false
         type: string
         default:
-    secrets:
-      DEPLOY_KEY:
-        required: true
 
 
 jobs:
@@ -40,14 +41,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configuring SSH
-        run: |
-          mkdir ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
-          echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
       - name: Creating config.mk
         run: |
           echo "BOARD=$BOARD" > config.mk
@@ -63,5 +56,3 @@ jobs:
       - name: Making image
         run: make image ZIP=1
 
-      - name: Uploading image
-        run: make upload
